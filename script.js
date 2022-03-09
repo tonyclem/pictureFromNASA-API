@@ -1,18 +1,18 @@
 const resultsNav = document.getElementById("resultsNav");
 const favoritesNav = document.getElementById("favoritesNav");
-const imagesContainer = document.querySelector(".image-container");
+const imagesContainer = document.querySelector(".images-container");
 const saveConfirmed = document.querySelector(".save-confirmed");
 const loader = document.querySelector(".loader");
 
-// Nasa APi
+// Nasa API
 const count = 10;
 const apiKey = "DEMO_KEY";
 const apiUri = `https://api.nasa.gov/planetary/apod?api_key=${apiKey}&count=${count}`;
 
+// get from localStorage or fetch from api
 let resultsArray = [];
 let favorites = {};
 
-// ShowContent
 function showContent(page) {
   window.scrollTo({ top: 0, behavior: "instant" });
   // if condition to check if the page is equal to results and show the hidden or remove the hidden
@@ -39,7 +39,7 @@ function createDOMNodes(page) {
 
     // link
     const link = document.createElement("a");
-    link.href = result.apiUri;
+    link.href = result.hdurl;
     // title that we display on the page
     link.title = "View Full Image";
     // target blank / open in new target
@@ -47,13 +47,12 @@ function createDOMNodes(page) {
 
     // Image // create a an img tag
     const image = document.createElement("img");
-    image.src = result.hdurl;
+    image.src = result.url;
     image.alt = "NASA PICTURE of the Day";
     // to reduced page load times
     image.loading = "lazy";
     // added style, with card-img from css
     image.classList.add("card-img-top");
-
     // Card body
     const cardBody = document.createElement("div");
     cardBody.classList.add("card-body");
@@ -113,10 +112,9 @@ function updateDOM(page) {
   // reset all the element
   imagesContainer.textContent = "";
   createDOMNodes(page);
-  //   showContent(page);
+  showContent(page);
 }
 
-// get 10 Image from Nasa Api
 async function getNasaPicture() {
   // Show Loader
   loader.classList.remove("hidden");
@@ -135,7 +133,6 @@ function saveFavorite(itemUrl) {
   resultsArray.forEach((item) => {
     if (item.url.includes(itemUrl) && !favorites[itemUrl]) {
       favorites[itemUrl] = item;
-
       // show confirmation for 2 seconds
       saveConfirmed.hidden = false;
       setTimeout(() => {
