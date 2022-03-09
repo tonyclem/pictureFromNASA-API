@@ -37,7 +37,7 @@ function createDOMNodes(page) {
     // added style, with card from css
     card.classList.add("card");
 
-    // link
+    // link href
     const link = document.createElement("a");
     link.href = result.hdurl;
     // title that we display on the page
